@@ -121,7 +121,6 @@ bin/elasticsearch-create-enrollment-token -s kibana
 ```
 
 ## Get verification code from kibana command
-![image](https://user-images.githubusercontent.com/112536860/190978978-7c5f747b-134b-4665-8f32-70192cd5fd83.png)
 
 ## At dev tools , try to get all node info
 ```
