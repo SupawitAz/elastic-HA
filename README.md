@@ -31,5 +31,52 @@ sysctl -w vm.max_map_count=262144
 vm.max_map_count=262144
 ```
 
-## 
+## Edit config/elasticsearch.yml (cd elasticsearch-8.4.1/) for first node
+```
+cluster.name: [CLUSTER_NAME] # ex. els-cluster
+node.name: [NODE_NAME]       # ex. els-1 
+network.host: [IP_ADDRESS]   # ex. 192.168.24.41
+```
 
+## Run first elasticsearch node
+```
+./bin/elasticsearch
+```
+
+## Useful command 
+```
+The generated password for the elastic built-in superuser is:
+<password>
+
+The enrollment token for Kibana instances, valid for the next 30 minutes:
+<enrollment-token>
+
+The hex-encoded SHA-256 fingerprint of the generated HTTPS CA DER-encoded certificate:
+<fingerprint>
+
+You can complete the following actions at any time:
+Reset the password of the elastic built-in superuser with
+'bin/elasticsearch-reset-password -u elastic'.
+
+Generate an enrollment token for Kibana instances with
+'bin/elasticsearch-create-enrollment-token -s kibana'.
+
+Generate an enrollment token for Elasticsearch nodes with
+'bin/elasticsearch-create-enrollment-token -s node'.
+```
+
+## Other elasticsearch node config before join
+```
+cluster.name: [CLUSTER_NAME] # same as first node ex. els-cluster
+node.name: [NODE_NAME]       # ex. els-2
+network.host: [IP_ADDRESS]   # ex. 192.168.24.42
+```
+
+## Join other node to cluster
+```
+# token get from command 'bin/elasticsearch-create-enrollment-token -s node' at first node 
+# this command use when join node
+bin/elasticsearch --enrollment-token <token> 
+```
+
+## Join other node to cluster
