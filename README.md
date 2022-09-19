@@ -135,7 +135,31 @@ GET /_cat/nodes?v
 curl --cacert /home/supawit/elasticsearch-8.4.1/config/certs/http_ca.crt -u elastic:Ung*_sm0s=5P5J7y+G1t https://192.168.24.43:9200/_nodes/_all/process | json_pp
 ```
 
-
+## Install Logstash 
+```
+# apt-get
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+sudo apt-get update && sudo apt-get install logstash
+# yum
+sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+```
+Add the following in your /etc/yum.repos.d/ directory in a file with a .repo suffix, for example logstash.repo
+```
+[logstash-8.x]
+name=Elastic repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+```
+Now it readt to install
+```
+sudo yum install logstash
+```
 
 
 
