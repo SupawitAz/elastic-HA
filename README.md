@@ -1,5 +1,5 @@
 # Elastic-HA
-install & set up elastic HA (disable all firewall if it dosen't work)
+install & set up elastic HA in debianOS (disable all firewall if it dosen't work)
 
 ## Download ELS
 ```
@@ -126,13 +126,17 @@ user = elastic
 password = from command 'bin/elasticsearch-reset-password -u elastic'
 
 
-## At dev tools , try to get all node info
+## At dev tools , try to get all node info and create some index
 ```
 GET /_nodes/_all/process
-# for shot
+# For shot
 GET /_cat/nodes?v
 # OR you can use curl via terminal by example command 
 curl --cacert /home/supawit/elasticsearch-8.4.1/config/certs/http_ca.crt -u elastic:Ung*_sm0s=5P5J7y+G1t https://192.168.24.43:9200/_nodes/_all/process | json_pp
+# Create index
+PUT /test-index
+# Get data from index
+GET /test-index/_search
 ```
 
 ## Install Logstash 
@@ -156,11 +160,54 @@ enabled=1
 autorefresh=1
 type=rpm-md
 ```
-Now it readt to install
+Now it ready to install
 ```
 sudo yum install logstash
 ```
 
+## certificate
+copy certificate from elasticsearch instance (default path : elasticsearch-8.4.1/config/certs)
+```
+# example copy elasticsearch http_ca.crt to logstash at path /home/supawit
+scp http_ca.crt 192.168.24.45:/home/supawit
+```
 
+## example Logstash pipeline that get input from keyboard
+```
+input {
+  stdin {
+    id => "my_plugin_id"
+  }
+}
+filter {
+    # Can be empty
+}
+output {
+elasticsearch {
+        hosts => ["https://192.168.24.41:9200","https://192.168.24.42:9200","https://192.168.24.43:9200"]
+
+        # SSL enabled
+        ssl => true
+        ssl_certificate_verification => true
+
+        # Path to your Cluster Certificate
+        cacert => "/home/supawit/http_ca.crt"
+
+        # The Logstash Username and Password created Earlier
+        user => "elastic"
+        password => "Supawit0"
+        # The name of the Index
+        index => "test-index"
+        #ilm_enabled => false
+        }
+}
+```
+
+
+## Install beat
+```
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.4.1-linux-x86_64.tar.gz
+tar xzvf filebeat-8.4.1-linux-x86_64.tar.gz
+```
 
 
