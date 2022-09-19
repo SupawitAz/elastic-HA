@@ -121,6 +121,10 @@ bin/elasticsearch-create-enrollment-token -s kibana
 ```
 
 ## Get verification code from kibana command
+user and password for login 
+user = elastic
+password = from command 'bin/elasticsearch-reset-password -u elastic'
+
 
 ## At dev tools , try to get all node info
 ```
