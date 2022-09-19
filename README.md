@@ -1,5 +1,5 @@
 # Elastic-HA
-install & set up elastic HA 
+install & set up elastic HA (disable all firewall if it dosen't work)
 
 ## Download ELS
 ```
