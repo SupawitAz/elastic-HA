@@ -40,7 +40,7 @@ network.host: [IP_ADDRESS]   # ex. 192.168.24.41
 
 ## Run first elasticsearch node
 ```
-./bin/elasticsearch
+bin/elasticsearch
 ```
 
 ## Useful command 
@@ -79,4 +79,10 @@ network.host: [IP_ADDRESS]   # ex. 192.168.24.42
 bin/elasticsearch --enrollment-token <token> 
 ```
 
-## Join other node to cluster
+## curl els node
+```
+# password can reset by use command 'bin/elasticsearch-reset-password -u elastic'
+curl --cacert [path]/elasticsearch-8.4.1/config/certs/http_ca.crt -u [username]:[password] https://[host-ipaddress]:9200
+# example curl 1 node
+curl --cacert /home/supawit/elasticsearch-8.4.1/config/certs/http_ca.crt -u elastic:Ung*_sm0s=5P5J7y+G1t https://192.168.24.41:9200
+```
