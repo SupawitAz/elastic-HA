@@ -202,7 +202,31 @@ elasticsearch {
         }
 }
 ```
+## Get input from filebeat
+```
+input {
+  beats {
+    port => 5044
+  }
+}
+filter {
+}
+output {
+elasticsearch {
+        hosts => ["https://192.168.24.41:9200","https://192.168.24.42:9200","https://192.168.24.43:9200"]
+        ssl => true
+        ssl_certificate_verification => true
+        cacert => "/home/supawit/http_ca.crt"
+        user => "elastic"
+        password => "Supawit0"
+        index => "test-index"
 
+```
+
+## Run logstash
+```
+/usr/share/logstash/bin/logstash -f /etc/logstash/conf.d/filebeat.conf
+```
 
 ## Install beat
 ```
@@ -210,4 +234,39 @@ curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.4.1-
 tar xzvf filebeat-8.4.1-linux-x86_64.tar.gz
 ```
 
+## config firebeat.yaml
+```
+filebeat.inputs: 
+- type: log
+  paths:
+    - /home/supawit/logstash-tutorial.log
 
+output.logstash:
+  # The Logstash hosts
+  hosts: ["192.168.24.45:5044"]
+```
+
+## Run filebeat
+```
+./filebeat -e -c filebeat.yml -d "publish"
+```
+
+## Test update file-log
+```
+echo hello-world >> /home/supawit/logstash-tutorial.log
+```
+
+## Use filebeat in k8s
+```
+# Download filebeat yaml
+curl -L -O https://raw.githubusercontent.com/elastic/beats/8.4/deploy/kubernetes/filebeat-kubernetes.yaml 
+```
+## Config filebeat-kubernetes.yaml
+```
+# In this case out put will sent to logstach
+output.logstash:
+  # The Logstash hosts
+  hosts: ["192.168.24.45:5044"]
+```
+
+## After config Let apply and see the result
